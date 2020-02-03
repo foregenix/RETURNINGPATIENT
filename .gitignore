@@ -1,0 +1,10 @@
+/private
+/sessions
+/databases
+/uploads
+/errors
+*.bak
+*.pyc
+
+!/private/Implant.cs
+!/**/.gitkeep
