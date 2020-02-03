@@ -64,4 +64,4 @@ dir_path = request.folder
 server_logs=os.path.join(dir_path,"private","server.log")
 db.settings.update_or_insert(name="SERVER_LOGS",value=server_logs)
 db.settings.update_or_insert(name="WIN_MCS_PATH",value="C:\\Program Files\\Mono\\Bin\\mcs.bat")
-db.settings.update_or_insert(name="PYTHON",value="/root/giuliano/Python-3.5.8/python")
+db.settings.update_or_insert(name="PYTHON",value="/usr/bin/python3")
