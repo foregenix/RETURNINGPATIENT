@@ -1,0 +1,145 @@
+timestamp: 2020-02-03T16:16:10.664426
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "username" CHAR(128),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2020-02-03T16:16:10.677136
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2020-02-03T16:16:10.691507
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2020-02-03T16:16:10.706918
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2020-02-03T16:16:10.723916
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2020-02-03T16:16:10.741049
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2020-02-03T16:16:10.765388
+CREATE TABLE "campaign"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "timestamp" TIMESTAMP
+);
+success!
+timestamp: 2020-02-03T16:16:10.788620
+CREATE TABLE "campaign_details"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "campaign_id" INTEGER REFERENCES "campaign" ("id") ON DELETE CASCADE  ,
+    "server_type" CHAR(512),
+    "connection_type" CHAR(512),
+    "server_domain" CHAR(512),
+    "keye" TEXT,
+    "keyn" TEXT
+);
+success!
+timestamp: 2020-02-03T16:16:10.806607
+CREATE TABLE "server"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "listening_ip" CHAR(512),
+    "custom_listening_ip" CHAR(512),
+    "port" CHAR(512),
+    "server_running" CHAR(1),
+    "server_PID" CHAR(512),
+    "privkey" TEXT,
+    "log_level" CHAR(512)
+);
+success!
+timestamp: 2020-02-03T16:16:10.819628
+CREATE TABLE "payload_details"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "campaign_id" INTEGER REFERENCES "campaign" ("id") ON DELETE CASCADE  ,
+    "polling_interval" INTEGER
+);
+success!
+timestamp: 2020-02-03T16:16:10.846203
+CREATE TABLE "settings"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "value" CHAR(512)
+);
+success!
+timestamp: 2020-02-03T16:16:10.866305
+CREATE TABLE "hosts"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "mac" CHAR(512),
+    "symmetric_key" TEXT,
+    "campaign_id" INTEGER,
+    "last_seen" TEXT,
+    "terminated" CHAR(1)
+);
+success!
+timestamp: 2020-02-03T16:16:10.890265
+CREATE TABLE "executed_commands"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "host_id" INTEGER,
+    "command_id" INTEGER,
+    "command" TEXT,
+    "result" TEXT,
+    "timestamp" TEXT
+);
+success!
+timestamp: 2020-02-03T16:16:10.906076
+CREATE TABLE "next_commands"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "host_id" INTEGER,
+    "next_command" TEXT,
+    "timestamp" TIMESTAMP,
+    "state" TEXT
+);
+success!
+timestamp: 2020-02-03T16:16:10.926178
+CREATE TABLE "next_files"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "host_id" INTEGER,
+    "file_name" TEXT,
+    "uploaded_file" CHAR(512),
+    "remote_path" TEXT,
+    "turbo" CHAR(1),
+    "insecure" CHAR(1),
+    "execute" CHAR(1),
+    "timestamp" TIMESTAMP,
+    "direction" INTEGER,
+    "state" TEXT
+);
+success!
