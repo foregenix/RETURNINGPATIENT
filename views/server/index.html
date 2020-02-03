@@ -1,0 +1,31 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #0f4c75; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">Server Status</h1>
+      {{if error_message:}}
+        <div class="alert alert-danger" role="alert">{{=error_message}}</div>
+    {{pass}}
+  </div>
+</div>
+{{end}}
+<div class="row"><div class="col-md-12"><table >
+    {{if is_server_running==True:}}<tr><td><h3><font color="green">Server is running</font></h3></td></tr><tr><td><h5>
+    Pid is {{=server_pid}}
+    </h5></td></tr><tr><td><h5>
+    Log file path is {{=showing_folder}}
+    </h5></td></tr><tr><td><h5>
+    Server Details:
+   </h5></td></tr><tr><td>{{=server_form}}</td></tr><tr><td><tr><td><a class="btn btn-danger" href="{{=URL('server','stop')}}">Stop server</a></td></tr>{{else:}}<tr><td><h3><font color="red">Server is not running</font></h3></td></tr><tr><td><h5>
+    Pid is {{=server_pid}}
+    </h5></td></tr><tr><td><h5>
+    Log file path is {{=showing_folder}}
+    </h5></td></tr><tr><td><h5>
+    Server Detail:
+    </h5></td></tr><tr><td>{{=server_form}}</td></tr><tr><td><tr><td><a class="btn btn-success" href="{{=URL('server','start')}}">Start server</a></td></tr>{{pass}} </table>
+<textarea rows="100" cols="200">{{=XML(textarea_logs, sanitize=True, permitted_tags=['br/'])}}
+</textarea>
+</div>
+</div>
+  </div>
+</div>

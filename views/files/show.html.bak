@@ -1,0 +1,48 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #333; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+      <h1 class="display-5"><a href="{{=URL('hosts','show',args=host.id)}}">{{=host_name}}</a></h1>
+    {{if error_message:}}
+        <div class="alert alert-danger" role="alert">{{=error_message}}</div>
+    {{pass}}
+  </div>
+</div>
+{{end}}
+
+      <div class="row">
+          <div class="col-md-6">
+              <h2> Send a file </h2>
+              <table >
+                 
+                  <tr><td>{{=send_file_form}}</td></tr>
+              </table>
+          </div>
+         <div class="col-md-6">
+             <h2>Queued and sent files:</h2>
+             {{if len(queued_files)==0:}}
+          <h3> No queued files </h3>
+        {{else:}}
+             {{=LOAD('files', 'queue.load', ajax=True,args=session.host_id,times="infinity",timeout=5000)}}
+          {{pass}}
+             <hr>
+         </div>
+      </div>
+      <hr>
+    <div class="jumbotron jumbotron-fluid" style="padding:30px;word-wrap:break-word;">
+      <div class="container center">
+        <a class="btn btn-primary" href="{{=URL('admin','default','index')}}">
+          <i class="fa fa-cog"></i>
+          {{=T("admin")}}
+        </a>
+        <a class="btn btn-secondary" href="{{=URL('examples','default','index')}}">{{=T("Online examples")}}</a>
+        <a class="btn btn-secondary" href="http://web2py.com">web2py.com</a>
+        <a class="btn btn-secondary" href="http://web2py.com/book">{{=T('Documentation')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','api_get_user_email')}}">{{=T('API Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','grid/auth_user')}}">{{=T('Grid Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','wiki')}}">{{=T('Wiki Example')}}</a>
+      </div>
+    </div>
+
+  </div>
+</div>

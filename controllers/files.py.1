@@ -1,0 +1,25 @@
+def show():
+    session.host_id=request.args(0,cast=int)
+    error_message=session.error_message
+    session.error_message=""
+    command_result=None
+    host_name=db(db.hosts.id==session.host_id).select(db.hosts.name).first().name
+    if (host_name is not None):
+        queued_files=db(db.next_files.host_id==session.host_id).select(db.next_files.id,db.next_files.filename,db.next_files.remote_path,db.next_files.state,db.next_files.timestamp)
+        db.next_files.filename.writable=False
+        
+        db.next_files.timestamp.default=request.now
+        db.next_files.host_id.default=session.host_id
+        db.next_files.direction.default=0
+        db.next_files.insecure.default=True
+        db.next_files.insecure.writable=False
+        db.next_files.state.default="PENDING"
+        send_file_form=SQLFORM(db.next_files,submit_button="Send File",showid=False,upload=URL('upload'),fields=['uploaded_file', 'remote_path','turbo','insecure','execute']).process()
+        send_file_form.element('textarea[name=remote_path]')['_rows'] = '1'
+        if request.vars.uploaded_file != None:
+            send_file_form.vars.filename = request.vars.uploaded_file.filename
+        if send_file_form.accepts(request, session):
+            redirect(URL('show',args=session.host_id))
+    else:
+        redirect(URL('hosts','index'))
+    return locals()

@@ -1,0 +1,28 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #333; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">Server Logs</h1>
+  </div>
+</div>
+{{end}}
+<div class="row">
+<textarea rows="100" cols="200">{{=logs}}</textarea>
+    </div>
+    <div class="jumbotron jumbotron-fluid" style="padding:30px;word-wrap:break-word;">
+      <div class="container center">
+        <a class="btn btn-primary" href="{{=URL('admin','default','index')}}">
+          <i class="fa fa-cog"></i>
+          {{=T("admin")}}
+        </a>
+        <a class="btn btn-secondary" href="{{=URL('examples','default','index')}}">{{=T("Online examples")}}</a>
+        <a class="btn btn-secondary" href="http://web2py.com">web2py.com</a>
+        <a class="btn btn-secondary" href="http://web2py.com/book">{{=T('Documentation')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','api_get_user_email')}}">{{=T('API Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','grid/auth_user')}}">{{=T('Grid Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','wiki')}}">{{=T('Wiki Example')}}</a>
+      </div>
+    </div>
+
+  </div>
+</div>

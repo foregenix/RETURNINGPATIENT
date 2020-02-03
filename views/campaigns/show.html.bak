@@ -1,0 +1,101 @@
+{{response.files.insert(0, URL('static', 'js/jquery.js'))}}
+{{response.files.insert(1, URL('static', 'js/web2py.js'))}}
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #0f4c75; color:white; padding:30px;word-wrap:break-word;"> <div class="row"><div class="col-md-5">Server Status: {{if is_server_running==True:}}<a class="btn btn-success" href="{{=URL('server','index')}}">RUNNING</a>{{else:}} <a class="btn btn-danger" href="{{=URL('server','index')}}">NOT RUNNING</a>{{pass}}</div><div class="col-md-7">
+    <h1 class="display-5">{{=campaign.name}}</h1>
+    {{if error_message:}}
+        <div class="alert alert-danger" role="alert">{{=error_message}}</div>
+    {{pass}}
+  </div>
+             </div>
+</div>
+{{end}}
+
+      <div class="row">
+          <div class="col-md-6">
+              <h2> Details </h2>
+              <br>
+              {{=details_form}}
+          </div>
+         <div class="col-md-6">
+             <h2>Generate payload</h2>
+             <br>
+              {{=payload_form}}
+             <h4>
+                 Submit the campaign and polling interval first, then:
+             </h4>
+             <a class="btn btn-primary" href="{{=URL('campaigns','download_exe')}}" onclick="check_form(event)">Download .exe</a>
+             <a class="btn btn-primary" href="{{=URL('campaigns','download_source')}}" onclick="check_form(event)">Download C# source code</a>
+         </div>
+      </div>
+   <div class="row">
+      <div class="col-md-6">
+          <h2> Hosts in the campaign:</h2>
+           {{if len(campaign_hosts)==0:}}
+          <table class="table"><tr><td><h4> No hosts yet</h4></td></tr></table>
+        {{else:}}
+         <table class="table"><tr><th>ID</th><th>Hostname</th><th>Actions</th></tr>
+            {{for host in campaign_hosts:}}
+            <tr>
+                <td>{{if host.terminated==True:}}<a class="text-danger" href="{{=URL('hosts','show',args=host.id)}}">{{=host.id}}</a></td> <td><a class="text-danger" href="{{=URL('hosts','show',args=host.id)}}">{{=host.name}}</a></td><td> <a class="btn btn-warning" href="{{=URL('hosts','remove',args=host.id)}}">Detach</a>{{else:}}<a  href="{{=URL('hosts','show',args=host.id)}}">{{=host.id}}</a></td> <td><a  href="{{=URL('hosts','show',args=host.id)}}">{{=host.name}}</a></td><td> <a class="btn btn-warning" href="{{=URL('hosts','remove',args=host.id)}}">Detach</a>{{pass}}</td>
+            </tr>
+            {{pass}}
+           </table>
+          {{pass}}
+     </div>
+       <div class="col-md-6">
+     {{=LOAD('campaigns', 'show.load', ajax=True,args=session.campaign_id,times="infinity",timeout=5000)}}
+</div>
+</div>
+
+
+
+  </div>
+</div>
+<script>
+window.FORM_HAS_CHANGED=false;
+$("input, select").change(function(){
+    window.FORM_HAS_CHANGED=true;
+});
+
+
+function check_form(e){
+
+    if (window.FORM_HAS_CHANGED==true){
+        e.preventDefault();
+        alert('There are unsaved changes. Please submit them before continuing');
+        return false;
+    }
+    else{
+              return true;}
+
+
+}
+
+$("#campaign_details_connection_type").on("change", function(event) {
+    if($(this).val() == "D"){
+        $('#campaign_details_server_domain').attr("disabled", "disabled");
+        $('#payload_details_server_domain').attr("disabled", "disabled");
+        $('#payload_details_server_ip').removeAttr("disabled");
+
+    } else  {
+        $('#campaign_details_server_domain').removeAttr("disabled");
+        $('#payload_details_server_domain').removeAttr("disabled");
+        $('#payload_details_server_ip').attr("disabled", "disabled");
+
+    }
+} );
+$(document).ready(function() {
+   if($("#campaign_details_connection_type").val() == "D"){
+        $('#campaign_details_server_domain').attr("disabled", "disabled");
+        $('#payload_details_server_domain').attr("disabled", "disabled");
+        $('#payload_details_server_ip').removeAttr("disabled");
+    } else  {
+        $('#campaign_details_server_domain').attr("disabled", "disabled");
+        $('#campaign_details_server_domain').removeAttr("disabled");
+        $('#payload_details_server_ip').removeAttr("disabled");
+
+    }
+});
+</script>

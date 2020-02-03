@@ -1,0 +1,18 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #009deb; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">{{=host.name}}</h1>
+  </div>
+</div>
+
+<div class="container center">
+      <h2>
+    This will stop the execution of the implant on the target machine. </h2><h2>There is no way to restart it using this interface.</h2><h2>
+Do you really want to continue?
+    </h2>
+            <table class="table table-hover text-centered"><tr><td><a class="btn btn-primary" href="{{=URL('hosts','show',args=host.id)}}">Nope</a></td><td>{{=yes_button}}</td></tr> </table>
+
+</div>
+    
+{{end}}

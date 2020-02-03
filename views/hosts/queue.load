@@ -1,0 +1,8 @@
+<table class="table">
+             <tr><th>ID</th><th>Command</th><th>State</th><th>Timestamp</th></tr>
+            {{for command in next_commands:}}
+            <tr>
+                <td>{{=command.id}}</td></Td><td>{{=command.next_command}}</td><td>{{=command.state}}</td><td>{{=command.timestamp}}</td>
+            </tr>
+            {{pass}}
+</table>

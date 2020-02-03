@@ -1,0 +1,47 @@
+{{extend 'layout.html'}}
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #0f4c75; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">HOSTS</h1>
+  </div>
+</div>
+{{end}}
+<div class="row">
+  <div class="col-md-12">
+     <div class="row">
+      <div class="col-md-6">
+          <h2> All the hosts associated to campaigns: </h2>
+           {{if len(rows)==0:}}
+          <h3> No campaigns yet</h3>
+        {{else:}}
+         <table class="table">
+            {{for row in rows:}}
+            <tr>
+                <td><h3><a href="{{=URL('show',args=row.id)}}">{{=row.id}} {{=row.name}}</a></h3></td>
+            </tr>
+            {{pass}}
+           </table>
+          {{pass}}
+          
+     </div>
+     <div class="col-md-6">
+      
+     </div>
+    </div>
+    <div class="jumbotron jumbotron-fluid" style="padding:30px;word-wrap:break-word;">
+      <div class="container center">
+        <a class="btn btn-primary" href="{{=URL('admin','default','index')}}">
+          <i class="fa fa-cog"></i>
+          {{=T("admin")}}
+        </a>
+        <a class="btn btn-secondary" href="{{=URL('examples','default','index')}}">{{=T("Online examples")}}</a>
+        <a class="btn btn-secondary" href="http://web2py.com">web2py.com</a>
+        <a class="btn btn-secondary" href="http://web2py.com/book">{{=T('Documentation')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','api_get_user_email')}}">{{=T('API Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','grid/auth_user')}}">{{=T('Grid Example')}}</a>
+        <a class="btn btn-secondary" href="{{=URL('default','wiki')}}">{{=T('Wiki Example')}}</a>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,5 @@
+<table class="table">
+              {{for command in executed_commands:}}
+            <tr><td><a href="{{=URL('hosts','showcommandresult',args=command.id)}}"> {{=command.id}} {{=command.command}} {{=command.timestamp}}</a></td></tr>
+                {{pass}}
+</table>

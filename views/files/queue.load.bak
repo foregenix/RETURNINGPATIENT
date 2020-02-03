@@ -1,0 +1,8 @@
+<table class="table">
+             <tr><th>ID</th><th>Local File Path</th><th>Remote File Path</th><th>State</th><th>Timestamp</th></tr>
+            {{for file in queued_files:}}
+            <tr>
+                <td>{{=file.id}}</td></Td><td>{{=file.filename}}</td><td>{{=file.remote_path}}</td><td>{{=file.state}}</td><td>{{=file.timestamp}}</td>
+            </tr>
+            {{pass}}
+</table>

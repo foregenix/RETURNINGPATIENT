@@ -1,0 +1,41 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<div class="jumbotron jumbotron-fluid background" style="background-color: #0f4c75; color:white; padding:30px;word-wrap:break-word;">
+  <div class="container center">
+    <h1 class="display-5">DASHBOARD</h1>
+  </div>
+</div>
+{{end}}
+
+<div class="row">
+  <div class="col-md-12">
+     <div class="row">
+      <div class="col-md-8">
+        <h2>Select a campaign: </h2>        
+        {{if len(rows)==0:}}
+          <h3> No campaigns yet</h3>
+        {{else:}}
+        <table class="table">
+             {{for row in rows:}}
+                <tr>
+                    <td><h3><a href="{{=URL('campaigns','show',args=row.id)}}">{{=row.id}} {{=row.name}}</a></h3></td>
+                </tr>
+            {{pass}}
+        </table>
+        {{pass}}  
+          <a class="btn btn-secondary" href="{{=URL('campaigns','index')}}">Start new...</a>
+              
+     </div>
+     <div class="col-md-4">
+      <h2> Statistics </h2>
+       <h5>
+           Coming soon...
+         </h5>
+     </div>
+    </div>
+
+      
+    
+  </div>
+</div>

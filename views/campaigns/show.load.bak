@@ -1,0 +1,13 @@
+<h2>Unassociated hosts: </h2>
+{{if len(unassigned_hosts)==0:}}
+    <table class="table"><tr><td><h4> No hosts </h4></td></tr></table>
+{{else:}}
+    <table class="table">
+         {{for host in unassigned_hosts:}}
+            <tr>
+                <td>{{if host.terminated!="T":}}{{=host.name}}{{else:}}<font color="red">{{=host.name}}</font>
+{{pass}}</td><td> {{if host.name!="Unregistered Host":}}<a class="btn btn-primary" href="{{=URL('hosts','add',args=host.id,extension=False)}}">Add</a>{{pass}}</td>
+            </tr>
+         {{pass}}
+    </table>
+{{pass}}
