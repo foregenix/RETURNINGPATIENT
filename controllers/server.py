@@ -31,7 +31,8 @@ def index():
     server_form=SQLFORM(db.server,server,showid=False,submit_button="Submit",_id='detailsform').process()
     if server_form.accepted:
         if server_form.vars.listening_ip=="Custom IP" and server_form.vars.custom_listening_ip==None:
-            server_form.vars.listening_ip=None
+                server_form.vars.listening_ip=None
+                redirect(URL('index'))
     try:
         textarea_logs=""
         with open(log_path) as f:
