@@ -5,6 +5,6 @@
 /errors
 *.bak
 *.pyc
-
+*.1
 !/private/Implant.cs
 !/**/.gitkeep
