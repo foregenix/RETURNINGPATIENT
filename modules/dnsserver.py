@@ -214,6 +214,8 @@ class DNSHandler(DatagramProtocol):
 			resp_type_class="00100001"
 			resp_ttl="00000001"
 			len_response=format(len(response),'02x')
+			if (len(len_response)==3):
+				len_response="FF"
 			len_plusone=format(len(response)+1,'04x')
 			message=transaction_id+flags+answers+authority_answers+other_answers+formatted_query+type_class+name+resp_type_class+resp_ttl+len_plusone+len_response+response.hex()
 			return message

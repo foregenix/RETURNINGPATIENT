@@ -99,6 +99,8 @@ class logic:
 					logging.info("Host Registration: %s %s",str(host_id),str(host_details))
 					confirm_id=self.register_host(host_id,host_details[0],host_details[1])	
 					self.update_host_timestamp(confirm_id)
+					if (str(host_id)!=str(confirm_id)):
+						logging.info("ID reverted from %s to %s",str(host_id),str(confirm_id))
 					response="H:"+str(confirm_id)+";C:;R:;"			
 					response=base64.b64encode(response.encode('utf-8'))
 					logging.debug("New host registered: %s",str(res))
