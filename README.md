@@ -15,4 +15,5 @@ A long-haul purely DNS based command and control server/implant
 4. Download the web2py source code, unzip it and start the server with:
 ```python web2py.py```
 5. From the web2py admin interface, upload web2py.app.ReturningPatient.w2p, name the application "ReturningPatient" and click Install
-6. Login to the application with ```admin/changeme```
+6. Edit the application and modify the mono and python3 paths right at the end of models/returningpatient.py
+7. Click on the name of the application and login to the application with ```admin/changeme```
