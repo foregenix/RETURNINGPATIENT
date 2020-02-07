@@ -90,10 +90,7 @@ def start():
                     if log_level is None:
                         log_level=="INFO"
                     python=db(db.settings.name=="PYTHON").select(db.settings.value).first().value
-                    if (platform.system()=='Linux'):
-                        server_process=Popen(["sudo",python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
-                    else:
-                        server_process=Popen([python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
+                    server_process=Popen([python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
                     try:
                         o, e = server_process.communicate(timeout=5)
                     except:
