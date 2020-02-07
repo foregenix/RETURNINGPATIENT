@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import platform
 import psutil
 import base64
 import signal
@@ -30,9 +31,9 @@ def index():
     db.server.custom_listening_ip.show_if=(db.server.listening_ip=="Custom IP")
     server_form=SQLFORM(db.server,server,showid=False,submit_button="Submit",_id='detailsform').process()
     if server_form.accepted:
-        if server_form.vars.listening_ip=="Custom IP" and server_form.vars.custom_listening_ip==None:
-                server_form.vars.listening_ip=None
-                redirect(URL('index'))
+        if server_form.vars.listening_ip!="Custom IP":
+                server_form.vars.custom_listening_ip=None
+        redirect(URL('index'))
     try:
         textarea_logs=""
         with open(log_path) as f:
@@ -89,8 +90,10 @@ def start():
                     if log_level is None:
                         log_level=="INFO"
                     python=db(db.settings.name=="PYTHON").select(db.settings.value).first().value
-                    print(python)
-                    server_process=Popen([python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
+                    if (platform.system()=='Linux'):
+                        server_process=Popen(["sudo",python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
+                    else:
+                        server_process=Popen([python,server_path, db_path, str(ip),str(port),log_path,log_level],stderr=PIPE)
                     try:
                         o, e = server_process.communicate(timeout=5)
                     except:
@@ -123,3 +126,4 @@ def stop():
                 db(db.server).update(server_PID=-1)
         finally:
                 redirect(URL('index'))
+    redirect(URL('index'))
